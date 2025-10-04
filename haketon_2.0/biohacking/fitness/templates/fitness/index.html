@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <title>Plan treningowy AI</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f6f8;
+            color: #333;
+            padding: 40px;
+        }
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: #fff;
+            border-radius: 12px;
+            padding: 30px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+        h1 { text-align: center; color: #222; }
+        form { margin-top: 20px; }
+        button {
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            padding: 10px 18px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+        button:hover { background-color: #0056b3; }
+        pre {
+            background: #f8f9fa;
+            border-radius: 8px;
+            padding: 15px;
+            white-space: pre-wrap;
+            word-wrap: break-word;
+        }
+        .result { margin-top: 30px; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>💪 Wygeneruj plan treningowy AI</h1>
+
+        <form method="post">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <button type="submit">Generuj plan</button>
+        </form>
+
+        {% if plan %}
+            <div class="result">
+                <h2>📋 Twój plan treningowy:</h2>
+                <pre>{{ plan }}</pre>
+            </div>
+        {% endif %}
+    </div>
+</body>
+</html>
