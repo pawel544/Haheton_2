@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>📸 Analiza postawy – AI Fitness</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <style>
+        body {
+            background: linear-gradient(135deg, #f8f9fa, #e9ecef);
+            min-height: 100vh;
+        }
+
+        .card {
+            border: none;
+            border-radius: 18px;
+            box-shadow: 0 6px 25px rgba(0,0,0,0.1);
+            max-width: 700px;
+            margin: auto;
+            position: relative;
+        }
+
+        /* 🚪 przycisk wylogowania w prawym górnym rogu */
+        .btn-logout {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            padding: 6px 14px;
+            font-size: 0.9rem;
+            border-radius: 8px;
+            display: inline-block;
+            width: auto;
+        }
+
+        .result-box {
+            white-space: pre-wrap;
+            font-family: "Inter", "Roboto", sans-serif;
+            background: #f8f9fa;
+            border-radius: 10px;
+            padding: 1rem;
+            border: 1px solid #dee2e6;
+        }
+
+        img.preview {
+            border-radius: 10px;
+            border: 2px solid #dee2e6;
+            max-width: 100%;
+            margin-top: 1rem;
+        }
+
+        #loading {
+            display: none;
+            text-align: center;
+        }
+
+        .spinner-border {
+            width: 3rem;
+            height: 3rem;
+        }
+    </style>
+</head>
+<body>
+<div class="container py-5 position-relative">
+    <div class="card p-4 p-md-5 shadow-lg border-0">
+
+        <!-- 🚪 Wylogowanie -->
+        <a href="{% url 'user:logautuser' %}" class="btn btn-outline-danger btn-sm btn-logout">
+            🚪 Wyloguj
+        </a>
+
+        <h1 class="text-center mb-4 fw-bold">📸 Analiza postawy AI</h1>
+
+        <!-- 📷 Formularz -->
+        <form method="POST" enctype="multipart/form-data" id="photoForm">
+            {% csrf_token %}
+            <div class="mb-3">
+                <label for="id_image" class="form-label fw-semibold">Dodaj zdjęcie treningowe</label>
+                {{ form.image }}
+            </div>
+            <button type="submit" class="btn btn-primary w-100 py-2 fs-5">
+                🔍 Prześlij i przeanalizuj
+            </button>
+        </form>
+
+        <!-- ⏳ Sekcja ładowania -->
+        <div id="loading" class="mt-4 text-center">
+            <div class="spinner-border text-primary" role="status"></div>
+            <p class="mt-2 text-primary fw-semibold">AI analizuje Twoją postawę... 💪</p>
+        </div>
+
+        <!-- 📷 Podgląd zdjęcia -->
+        {% if preview_url %}
+            <div class="text-center mt-4">
+                <h5 class="mb-2">📷 Twoje zdjęcie:</h5>
+                <img src="{{ preview_url }}" class="preview" alt="Zdjęcie treningowe">
+            </div>
+        {% endif %}
+
+        <!-- 🧠 Wynik analizy -->
+        {% if result %}
+            <div class="mt-4">
+                <h5 class="fw-bold">🧠 Wynik analizy:</h5>
+                <div class="result-box">{{ result }}</div>
+            </div>
+        {% endif %}
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+<script>
+    // ⏳ Pokazuje loader po kliknięciu "Prześlij"
+    const form = document.getElementById('photoForm');
+    const loading = document.getElementById('loading');
+    form.addEventListener('submit', () => {
+        loading.style.display = 'block';
+    });
+</script>
+</body>
+</html>
+

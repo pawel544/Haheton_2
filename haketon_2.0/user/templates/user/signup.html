@@ -1,0 +1,106 @@
+
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rejestracja użytkownika</title>
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    >
+    <style>
+        html, body {
+            height: 100%;
+            margin: 0;
+            background: linear-gradient(135deg, #f8f9fa, #e9ecef);
+        }
+        .signup-container {
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        .card {
+            border: none;
+            border-radius: 20px;
+            box-shadow: 0 6px 25px rgba(0, 0, 0, 0.1);
+            max-width: 480px;
+            width: 100%;
+        }
+        .card-body {
+            padding: 3rem;
+        }
+        .btn-success {
+            font-size: 1.1rem;
+            padding: 10px 0;
+            border-radius: 10px;
+        }
+        .alert {
+            border-radius: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div class="signup-container">
+        <div class="card bg-white shadow-lg border-0">
+            <div class="card-body">
+                <h1 class="text-center mb-4">🧾 Rejestracja</h1>
+
+                {% if messages %}
+                    {% for message in messages %}
+                        <div class="alert alert-{{ message.tags }} text-center">
+                            {{ message }}
+                        </div>
+                    {% endfor %}
+                {% endif %}
+
+                <form method="POST" action="{% url 'user:signupuser' %}">
+                    {% csrf_token %}
+                    <div class="mb-3">
+                        <label for="id_username" class="form-label fw-semibold">Nazwa użytkownika</label>
+                        {{ form.username }}
+                        {% if form.errors.username %}
+                            <div class="text-danger small mt-1">
+                                {{ form.errors.username }}
+                            </div>
+                        {% endif %}
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="id_password1" class="form-label fw-semibold">Hasło</label>
+                        {{ form.password1 }}
+                        {% if form.errors.password1 %}
+                            <div class="text-danger small mt-1">
+                                {{ form.errors.password1 }}
+                            </div>
+                        {% endif %}
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="id_password2" class="form-label fw-semibold">Powtórz hasło</label>
+                        {{ form.password2 }}
+                        {% if form.errors.password2 %}
+                            <div class="text-danger small mt-1">
+                                {{ form.errors.password2 }}
+                            </div>
+                        {% endif %}
+                    </div>
+
+                    <div class="d-grid gap-2 mt-4">
+                        <button type="submit" class="btn btn-success py-2 fs-5">Zarejestruj się</button>
+                        <button type="reset" class="btn btn-secondary py-2">Wyczyść</button>
+                    </div>
+                </form>
+
+                <div class="text-center mt-4">
+                    <p class="text-muted mb-0">Masz już konto?</p>
+                    <a href="{% url 'user:loginuser' %}" class="text-decoration-none">➡️ Zaloguj się</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
